@@ -3,10 +3,18 @@ public class Object{
 		private int width;
 		private int id;
 		private boolean isOnBox;
-		public double rate(int bheight, int bwidth){
-			double heightrate = height / (double) bheight;
-			double widthrate = width / (double) bwidth;
-			return (heightrate>widthrate ? heightrate : widthrate);
+		public boolean rateH(Object compared){
+			if (compared.getH()==height)
+			return (compared.area()>area() ? true : false);
+			return (compared.getH()>height ? true : false);
+		}
+		public boolean rateW(Object compared){
+			if (compared.getW()==width)
+				return (compared.area()>area() ? true : false);
+				return (compared.getW()>width? true : false);
+		}
+		public int area(){
+			return height*width;
 		}
 		public int getH(){
 			return height;

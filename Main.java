@@ -38,31 +38,57 @@ public class Main {
 		
 		int[][] baggage = new int[baggageH][baggageW];
 		Object biggestOutOfBox;
-		for(int j=0;j<objectSize;j++){
+		for(int round=0;round<objectSize;round++){
 			int x=0;
-			while(objects.get(x).isOnTheBox()) x++;
-			biggestOutOfBox = objects.get(x);
-		for(int i=0;i<objectSize; i++){
-			if (!objects.get(i).isOnTheBox() && biggestOutOfBox.rate(baggageH, baggageW)<objects.get(i).rate(baggageH, baggageW))
+			
+			if (round%2==1){
+				while(objects.get(x).isOnTheBox()) x++;
+				biggestOutOfBox = objects.get(x);
+			for(int i=0;i<objectSize; i++){
+				if (!objects.get(i).isOnTheBox() && biggestOutOfBox.rateH(objects.get(i)))
 				biggestOutOfBox = objects.get(i);
-		}
-		int h=0;
-		while(!biggestOutOfBox.isOnTheBox() && h!=baggageH){
+			}
+			int h=0;
+			while(!biggestOutOfBox.isOnTheBox() && h!=baggageH){
+				int w=0;
+				while(!biggestOutOfBox.isOnTheBox() && w!=baggageW){
+					if (baggage[h][w]==0 && isEnoughPlace(h,w,biggestOutOfBox, baggage)){
+						for(int k=h; k<h+biggestOutOfBox.getH();k++){
+							for (int l=w;l<w+biggestOutOfBox.getW(); l++){
+								baggage[k][l] = biggestOutOfBox.getId()+1;
+							}
+						}
+						biggestOutOfBox.putInBox();
+					}
+					w++;
+				}
+			h++;
+			}
+			}
+			else{
+				while(objects.get(x).isOnTheBox()) x++;
+				biggestOutOfBox = objects.get(x);
+			for(int i=0;i<objectSize; i++){
+				if (!objects.get(i).isOnTheBox() && biggestOutOfBox.rateW(objects.get(i)))
+						biggestOutOfBox = objects.get(i);
+			}
 			int w=0;
 			while(!biggestOutOfBox.isOnTheBox() && w!=baggageW){
-				if (baggage[h][w]==0 && isEnoughPlace(h,w,biggestOutOfBox, baggage)){
-					for(int k=h; k<h+biggestOutOfBox.getH();k++){
-						for (int l=w;l<w+biggestOutOfBox.getW(); l++){
-							baggage[k][l] = biggestOutOfBox.getId()+1;
+				int h=0;
+				while(!biggestOutOfBox.isOnTheBox() && h!=baggageH){
+					if (baggage[h][w]==0 && isEnoughPlace(h,w,biggestOutOfBox, baggage)){
+						for(int k=h; k<h+biggestOutOfBox.getH();k++){
+							for (int l=w;l<w+biggestOutOfBox.getW(); l++){
+								baggage[k][l] = biggestOutOfBox.getId()+1;
+							}
 						}
+						biggestOutOfBox.putInBox();
 					}
-					biggestOutOfBox.putInBox();
+					h++;
 				}
-				w++;
+			w++;
 			}
-		h++;
-		}
-		
+			}
 		}
 		
 		
